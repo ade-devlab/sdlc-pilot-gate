@@ -1,0 +1,12 @@
+# Later lines win. The API contract needs every client team's approval.
+*                           @ade-devlab/backend
+backend/                    @ade-devlab/backend
+backend/*/db/migration/     @ade-devlab/db @ade-devlab/backend
+backend/**/*.graphqls       @ade-devlab/backend @ade-devlab/frontend @ade-devlab/mobile
+backend/proto/              @ade-devlab/backend
+frontend/                   @ade-devlab/frontend
+mobile/                     @ade-devlab/mobile
+infra/                      @ade-devlab/infra
+docs/blueprints/            @ade-devlab/backend @ade-devlab/product
+docs/qa/                    @ade-devlab/qa @ade-devlab/product
+.github/                    @ade-devlab/infra

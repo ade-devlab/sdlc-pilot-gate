@@ -1,0 +1,4 @@
+syntax = "proto3";
+package news.v1;
+
+message Ping { optional string id = 1; }

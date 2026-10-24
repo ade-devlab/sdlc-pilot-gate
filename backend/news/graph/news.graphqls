@@ -1,0 +1,8 @@
+type Query {
+  newsOverviewAsset(assetCode: String!): NewsOverviewAsset
+}
+
+type NewsOverviewAsset {
+  assetCode: String!
+  summary: String
+}
