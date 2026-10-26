@@ -1,0 +1,42 @@
+# Assigns a pull request's author to every issue the PR closes ("Closes #n"),
+# so a slice shows who did it even when nobody assigned it at the start.
+name: Assign PR author to closed issues
+
+on:
+  pull_request:
+    types: [opened, reopened, edited, ready_for_review]
+
+permissions:
+  issues: write
+  pull-requests: read
+
+jobs:
+  assign:
+    if: github.event.pull_request.user.type != 'Bot'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Assign the author to each closing issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+          AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          set -euo pipefail
+          # GitHub resolves "Closes #n" shortly after the PR is opened, so read it a few times.
+          issues=""
+          for attempt in 1 2 3 4 5 6; do
+            issues=$(gh pr view "$PR" -R "$REPO" --json closingIssuesReferences \
+              --jq '.closingIssuesReferences[].number')
+            [ -n "$issues" ] && break
+            sleep 5
+          done
+          if [ -z "$issues" ]; then
+            echo "PR #$PR closes no issue; nothing to assign."
+            exit 0
+          fi
+          for n in $issues; do
+            gh issue edit "$n" -R "$REPO" --add-assignee "$AUTHOR"
+            echo "Assigned $AUTHOR to #$n"
+          done
