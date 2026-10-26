@@ -6,3 +6,4 @@ type NewsOverviewAsset {
   assetCode: String!
   summary: String
 }
+// pilot change for #2
