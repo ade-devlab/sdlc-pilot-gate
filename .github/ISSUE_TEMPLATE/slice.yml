@@ -1,0 +1,66 @@
+name: Slice
+description: One service x role piece of an epic. Add it as a sub-issue of the epic.
+title: "[<Role>] <service>: <what>"
+labels: ["slice"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Add a `role:*` and a `svc:*` label. A slice that others wait on (a money-path schema, an API contract)
+        also gets `needs-approval`; only a human replaces it with `approved`.
+  - type: input
+    id: epic
+    attributes:
+      label: Epic
+      placeholder: "#1"
+    validations:
+      required: true
+  - type: dropdown
+    id: role
+    attributes:
+      label: Role
+      options:
+        - db (database-architect)
+        - contract (BE + FE + mobile agree on .graphqls / .proto)
+        - backend (backend-expert)
+        - temporal (temporal-expert)
+        - frontend (frontend-expert)
+        - mobile (mobile-expert)
+        - infra (infra-expert / sre-expert)
+        - qa (qa-engineer)
+        - docs (tech-writer)
+    validations:
+      required: true
+  - type: textarea
+    id: inputs
+    attributes:
+      label: Inputs
+      description: Blueprint sections, spec case IDs, and the slices that must finish first.
+      placeholder: |
+        Blueprint §4 sequence, §6 failure map
+        Cases: NOV-03a, NOV-03b
+        Blocked by: #3 (contract)
+    validations:
+      required: true
+  - type: textarea
+    id: contract
+    attributes:
+      label: Contract produced or consumed
+      description: RPC, GraphQL field, event or table, and whether this slice produces or consumes it.
+  - type: textarea
+    id: plan
+    attributes:
+      label: Plan
+      description: Files or packages to touch; on the money path, the failure-mode summary (stop, repeat, race, lie).
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: Done when
+      description: The area's Done command, and the case IDs that must be Automated.
+      placeholder: |
+        cd backend && go build ./... && go vet ./... && go test ./...
+        Automated: NOV-03a, NOV-03b
+    validations:
+      required: true

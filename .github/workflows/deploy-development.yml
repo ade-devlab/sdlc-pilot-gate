@@ -1,0 +1,31 @@
+# Simulated deploy to development on every push to development, then the epic tracker.
+name: Deploy development
+
+on:
+  push:
+    branches: [development]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-development
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: development
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Deploy (simulated)
+        run: echo "Deploying ${{ github.sha }} to development"
+      - name: Track epics
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash .github/scripts/track-epics.sh development "${{ github.sha }}"
