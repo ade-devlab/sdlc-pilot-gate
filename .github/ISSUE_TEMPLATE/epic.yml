@@ -1,0 +1,58 @@
+name: Epic
+description: One feature, anchored on an approved blueprint. Its slices are sub-issues.
+title: "[Epic] <area> · <feature>"
+labels: ["epic"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        An epic opens only after its blueprint (and its acceptance spec, when the feature has one) is approved.
+        Each service x role slice is a sub-issue made from the Slice template.
+  - type: input
+    id: blueprint
+    attributes:
+      label: Blueprint
+      description: Tracked path of the approved blueprint.
+      placeholder: docs/blueprints/news-asset-overview.md
+    validations:
+      required: true
+  - type: input
+    id: spec
+    attributes:
+      label: Acceptance spec
+      description: Tracked path, or "none".
+      placeholder: docs/qa/news-asset-overview.md
+    validations:
+      required: true
+  - type: textarea
+    id: approval
+    attributes:
+      label: Design approval
+      description: Who approved the blueprint and the spec, when, and where (PR or message).
+      placeholder: |
+        Blueprint: approved by @owner on 2026-10-20 (PR #12)
+        Spec criteria: …
+        Spec register: …
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: What ships in this epic, in two or three sentences. Link to the blueprint for detail.
+    validations:
+      required: true
+  - type: textarea
+    id: affects
+    attributes:
+      label: Other features affected
+      description: Features whose contract this epic changes, each with the contract (RPC, GraphQL field, event, table).
+      placeholder: |
+        - news-consumer-feed: GraphQL newsOverviewAsset (field shape changes)
+  - type: checkboxes
+    id: risk
+    attributes:
+      label: Risk
+      options:
+        - label: Money path (order, balance, settlement, fees, ledger)
+        - label: Regulated (needs compliance sign-off)
